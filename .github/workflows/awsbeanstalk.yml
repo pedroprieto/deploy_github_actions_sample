@@ -4,7 +4,7 @@ name: Despliegue en AWS Beanstalk
 # Evento que causará la ejecución: push a la rama master
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   # Nombre del trabajo
@@ -14,37 +14,36 @@ jobs:
 
     # Pasos
     steps:
-    # Clonado del repositorio
-    - uses: actions/checkout@v3
-    
-    # Comandos para instalación de dependencias y ejecución de tests
-    - name: Instalación de dependencias y tests
-      run: |
-        npm install
-        npm run test
-    
-    # Comando para generar el archivo zip de la aplicación. Se excluye la carpeta de librerías 'node_modules' porque se instalará en la plataforma Beanstalk al desplegarse
-    - name: Generar archivo zip con el código de la aplicación
-      run: zip -r deploy.zip * -x "**node_modules**"
-      
-    # Despliegue mediante la acción 'Beanstalk deploy' (https://github.com/marketplace/actions/beanstalk-deploy)
-    - name: Despliegue en AWS Beanstalk
-      uses: einaregilsson/beanstalk-deploy@v21
-      with:
-        # AWS Access Key
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # AWS Secret Key
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        # AWS Session Token (necesaria en los laboratorios de AWS Academy)
-        aws_session_token: ${{ secrets.AWS_SESSION_TOKEN}}
-        # AWS Region
-        region: us-east-1
-        # Nombre de la aplicación creada en Beanstalk
-        application_name: PedroTest1
-        # Nombre del entorno creado en Beanstalk
-        environment_name: PedroTest1-env
-        # Nombre de la versión a crear en Beanstalk
-        version_label: v1.0
-        # Archivo con el código de la aplicación (generado en el paso anterior)
-        deployment_package: deploy.zip
+      # Clonado del repositorio
+      - uses: actions/checkout@v3
 
+      # Comandos para instalación de dependencias y ejecución de tests
+      - name: Instalación de dependencias y tests
+        run: |
+          npm install
+          npm run test
+
+      # Comando para generar el archivo zip de la aplicación. Se excluye la carpeta de librerías 'node_modules' porque se instalará en la plataforma Beanstalk al desplegarse
+      - name: Generar archivo zip con el código de la aplicación
+        run: zip -r deploy.zip * -x "**node_modules**"
+
+      # Despliegue mediante la acción 'Beanstalk deploy' (https://github.com/marketplace/actions/beanstalk-deploy)
+      - name: Despliegue en AWS Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          # AWS Access Key
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # AWS Secret Key
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # AWS Session Token (necesaria en los laboratorios de AWS Academy)
+          aws_session_token: ${{ secrets.AWS_SESSION_TOKEN}}
+          # AWS Region
+          region: us-east-1
+          # Nombre de la aplicación creada en Beanstalk
+          application_name: PedroTest2
+          # Nombre del entorno creado en Beanstalk
+          environment_name: PedroTest2-env
+          # Nombre de la versión a crear en Beanstalk
+          version_label: v1.0
+          # Archivo con el código de la aplicación (generado en el paso anterior)
+          deployment_package: deploy.zip
